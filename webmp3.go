@@ -83,7 +83,7 @@ func playPage(title string, file File) *Page {
 func musicHandler(w http.ResponseWriter, r *http.Request) {
     files := findMusic(MUSICDIR)
     p := indexPage("Music", files)
-    t, _ := template.ParseFiles("index.html")
+    t, _ := template.ParseFiles("templates/index.html")
     t.Execute(w, p)
 }
 
@@ -91,7 +91,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
     filename := r.URL.Path[len("/play"):]
     file := getFileInfo(filename)
     p := playPage("Play", file)
-    t, _ := template.ParseFiles("play.html")
+    t, _ := template.ParseFiles("templates/play.html")
     t.Execute(w, p)
 }
 
