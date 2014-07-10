@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 )
 
-const MUSICDIR string = "/music/"
+const MUSICDIR string = "/music"
 
 type Page struct {
 	Title string
@@ -28,6 +28,7 @@ type File struct {
 type ID3 struct {
 	Artist string
 	Title  string
+	Album  string
 }
 
 func getID3(p string) *ID3 {
@@ -35,7 +36,11 @@ func getID3(p string) *ID3 {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return &ID3{mp3File.Artist(), mp3File.Title()}
+	defer mp3File.Close()
+	return &ID3{
+		mp3File.Artist(),
+		mp3File.Title(),
+		mp3File.Album()}
 }
 
 func getFileInfo(p string) File {
