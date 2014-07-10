@@ -1,31 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{.File.ID3.Artist}} - {{.File.ID3.Title}}</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    </head>
     <body>
+    
         <div class="container">
+            
             <div class="row">
-                <div class="col-md-10">
-                    <h1>{{.File.ID3.Artist}} <small>{{.File.ID3.Title}}</small></h1>
-                    <audio autoplay="autoplay" controls="controls">
+                <div class="col-md-8 col-md-offset-2">
+                    <div id="artist">
+                        <h1>{{.File.ID3.Artist}} <small>{{.File.ID3.Album}}</small></h1>
+                    </div>
+                    <h3>{{.File.ID3.Title}}</h3>
+
+                    <audio id="player" autoplay="autoplay">
                         <source src="/music{{.File.Path}}" />
                     </audio>
+                    
+                    <div class="progress">
+                        <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="100" aria-valuemax="100" style="width: 0%;">
+                        </div>
+                    </div>
+                
+                    <div id="time" class="pull-right">
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="document.getElementById('player').play()"><span class="glyphicon glyphicon-play"></span></button>
+                    <button type="button" class="btn btn-default" onclick="document.getElementById('player').pause()"><span class="glyphicon glyphicon-pause"></span></button>
+                    <button type="button" class="btn btn-default" onclick="document.getElementById('player').volume -= 0.1"><span class="glyphicon glyphicon-volume-down"></span></button> 
+                    <button type="button" class="btn btn-default" onclick="document.getElementById('player').volume += 0.1"><span class="glyphicon glyphicon-volume-up"></span></button>
                 </div>
             </div>
+
         </div>
     
+
+    <script>
+    function updateProgress() { 
+        var progress = document.getElementById("progress"); 
+        var value = 0; 
+        if (player.currentTime > 0) { 
+            value = Math.floor((100 / player.duration) * player.currentTime); 
+        } 
+        progress.style.width = value + "%"; 
+        var minutes = Math.floor(player.currentTime / 60);
+        var seconds = Math.floor(player.currentTime - minutes * 60);
+        var seconds = (seconds < 10) ? "0"+seconds: seconds;
+        $("#time").text(minutes+" : "+seconds);
+    }
+    </script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+    <script>
+    $(document).ready(function(){
+        player.addEventListener("timeupdate", updateProgress, false);
+    });
+    </script>
   </body>
 </html>
